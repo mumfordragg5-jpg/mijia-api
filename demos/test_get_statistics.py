@@ -1,10 +1,14 @@
 import json
 import time
+from pathlib import Path
 
 from mijiaAPI import mijiaAPI
 
 
-api = mijiaAPI(".mijia-api-data/auth.json")
+# 数据目录位于项目根目录（demos 的上一级），用绝对路径避免受运行目录影响
+DATA_DIR = Path(__file__).resolve().parent.parent / ".mijia-api-data"
+
+api = mijiaAPI(DATA_DIR / "auth.json")
 devices = api.get_devices_list()
 for device in devices:
     if device['model'] == 'lumi.acpartner.mcn04':

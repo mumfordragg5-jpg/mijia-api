@@ -1,17 +1,21 @@
 import json
 import logging
 import time
+from pathlib import Path
 
 from mijiaAPI import mijiaAPI
 
 
 logging.getLogger("mijiaAPI").setLevel(logging.DEBUG)
 
-api = mijiaAPI(".mijia-api-data/auth.json")
+# 数据目录位于项目根目录（demos 的上一级），用绝对路径避免受运行目录影响
+DATA_DIR = Path(__file__).resolve().parent.parent / ".mijia-api-data"
+
+api = mijiaAPI(DATA_DIR / "auth.json")
 
 # ----------------------- get homes list -----------------------
 homes = api.get_homes_list()
-with open(".mijia-api-data/homes.json", "w", encoding="utf-8") as f:
+with open(DATA_DIR / "homes.json", "w", encoding="utf-8") as f:
     json.dump(homes, f, ensure_ascii=False, indent=2)
 time.sleep(1)
 home_id = homes[0]['id']
@@ -19,31 +23,31 @@ home_name = homes[0]['name']
 
 # ---------------------- get devices list ----------------------
 devices = api.get_devices_list()
-with open(".mijia-api-data/devices.json", "w", encoding="utf-8") as f:
+with open(DATA_DIR / "devices.json", "w", encoding="utf-8") as f:
     json.dump(devices, f, ensure_ascii=False, indent=2)
 time.sleep(1)
 
 # -------------------- get shared homes list -------------------
 shared_devices = api.get_shared_devices_list()
-with open(".mijia-api-data/shared_devices.json", "w", encoding="utf-8") as f:
+with open(DATA_DIR / "shared_devices.json", "w", encoding="utf-8") as f:
     json.dump(shared_devices, f, ensure_ascii=False, indent=2)
 time.sleep(1)
 
 # ------------------ get devices with home_id ------------------
 devices_with_home = api.get_devices_list(home_id=home_id)
-with open(f".mijia-api-data/devices_in_{home_name}.json", "w", encoding="utf-8") as f:
+with open(DATA_DIR / f"devices_in_{home_name}.json", "w", encoding="utf-8") as f:
     json.dump(devices_with_home, f, ensure_ascii=False, indent=2)
 time.sleep(1)
 
 # ---------------------- get scenes list -----------------------
 scenes = api.get_scenes_list()
-with open(".mijia-api-data/scenes.json", "w", encoding="utf-8") as f:
+with open(DATA_DIR / "scenes.json", "w", encoding="utf-8") as f:
     json.dump(scenes, f, ensure_ascii=False, indent=2)
 time.sleep(1)
 
 # ------------------ get scenes with home_id -------------------
 scenes_with_home = api.get_scenes_list(home_id=home_id)
-with open(f".mijia-api-data/scenes_in_{home_name}.json", "w", encoding="utf-8") as f:
+with open(DATA_DIR / f"scenes_in_{home_name}.json", "w", encoding="utf-8") as f:
     json.dump(scenes_with_home, f, ensure_ascii=False, indent=2)
 time.sleep(1)
 
@@ -57,13 +61,13 @@ time.sleep(1)
 
 # -------------------- get consumable items --------------------
 consumable_items = api.get_consumable_items()
-with open(".mijia-api-data/consumable_items.json", "w", encoding="utf-8") as f:
+with open(DATA_DIR / "consumable_items.json", "w", encoding="utf-8") as f:
     json.dump(consumable_items, f, ensure_ascii=False, indent=2)
 time.sleep(1)
 
 # ------------- get consumable items with home_id --------------
 consumable_items_with_home = api.get_consumable_items(home_id=home_id)
-with open(f".mijia-api-data/consumable_items_in_{home_name}.json", "w", encoding="utf-8") as f:
+with open(DATA_DIR / f"consumable_items_in_{home_name}.json", "w", encoding="utf-8") as f:
     json.dump(consumable_items_with_home, f, ensure_ascii=False, indent=2)
 time.sleep(1)
 
